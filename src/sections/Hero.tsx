@@ -1,7 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { useRef, useState, type FormEvent, type ReactNode } from "react";
-import { ProceduralDNA } from "@/components/dna/ProceduralDNA";
-import { HERO_DNA } from "@/components/dna/DNAConfig";
+import { useState, type FormEvent, type ReactNode } from "react";
 import { ArrowCircle } from "@/components/ui/ArrowButton";
 import { CountUp } from "@/components/ui/CountUp";
 import { ChevronDown } from "@/components/ui/Icons";
@@ -9,15 +7,6 @@ import { RevealLines } from "@/motion/reveal";
 import { EASE_OUT_EXPO, MICRO_SPRING } from "@/motion/transitions";
 import avatar from "@/assets/team-sarul.jpg";
 import { Nav } from "./Nav";
-
-const HERO_BG = [
-  "radial-gradient(9% 70% at 49% 8%, rgba(150,222,252,0.42) 0%, rgba(150,222,252,0) 100%)",
-  "radial-gradient(40% 48% at 50% -4%, rgba(118,200,244,0.55) 0%, rgba(118,200,244,0) 72%)",
-  "radial-gradient(44% 58% at 76% 50%, rgba(104,186,240,0.42) 0%, rgba(104,186,240,0) 72%)",
-  "radial-gradient(55% 52% at 100% 100%, rgba(160,214,242,0.75) 0%, rgba(160,214,242,0) 72%)",
-  "radial-gradient(50% 42% at 12% 104%, rgba(28,66,132,0.55) 0%, rgba(28,66,132,0) 75%)",
-  "linear-gradient(102deg, #3163b0 0%, #3a74bf 30%, #4686cc 55%, #4f94d6 78%, #5ba2dd 100%)",
-].join(",");
 
 function SearchPill() {
   const reduce = useReducedMotion();
@@ -33,8 +22,9 @@ function SearchPill() {
   return (
     <motion.div
       initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18, filter: "blur(6px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{ duration: 1.3, delay: 0.55, ease: EASE_OUT_EXPO }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 1.2, delay: 0.35, ease: EASE_OUT_EXPO }}
     >
       <motion.form
         role="search"
@@ -109,7 +99,8 @@ function Stat({
   return (
     <motion.li
       initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }}
-      animate={{ opacity: 1, y: 0 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.2 }}
       transition={{ duration: 1.3, delay, ease: EASE_OUT_EXPO }}
       className="flex items-center gap-[clamp(10px,0.85vw,14px)]"
     >
@@ -122,35 +113,39 @@ function Stat({
 }
 
 export function Hero() {
-  const heroRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
 
   return (
     <section
       id="home"
-      ref={heroRef}
       aria-label="Introduction"
       className="relative isolate flex min-h-[max(100svh,760px)] flex-col overflow-hidden text-white md:h-[clamp(700px,56.6vw,1020px)] md:min-h-0"
     >
-      <div aria-hidden="true" className="absolute inset-0 -z-20" style={{ background: HERO_BG }} />
-      <ProceduralDNA config={HERO_DNA} scrollTarget={heroRef} className="absolute inset-0 -z-10" seed={11} />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-[5] h-[34%] bg-[linear-gradient(to_top,rgba(34,78,148,0.38),rgba(34,78,148,0))]"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 left-0 -z-[5] w-[46%] bg-[linear-gradient(to_right,rgba(46,92,168,0.28),rgba(46,92,168,0))] md:block"
+      {/* Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        src="https://res.cloudinary.com/dpiifnzd7/video/upload/v1790840120/DNA_Helix_Enhanced_jco4mk.mp4"
+        className="absolute inset-0 h-full w-full object-cover -z-10 pointer-events-none"
       />
 
       <Nav />
 
-      <div className="container-x relative z-10 pt-[clamp(128px,10.5vw,176px)]">
+      {/* Main Hero Content - Scroll-Triggered Fade-In */}
+      <motion.div
+        initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 1.2, ease: EASE_OUT_EXPO }}
+        className="container-x relative z-10 pt-[clamp(128px,10.5vw,176px)]"
+      >
         <RevealLines
           as="h1"
-          immediate
-          delay={0.25}
-          stagger={0.14}
+          delay={0.15}
+          stagger={0.12}
           className="t-hero text-white"
           lines={[
             { key: "l1", content: "Transform DNA" },
@@ -164,19 +159,27 @@ export function Hero() {
 
         <motion.p
           initial={reduce ? { opacity: 0 } : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.3, delay: 0.75, ease: EASE_OUT_EXPO }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 1.3, delay: 0.45, ease: EASE_OUT_EXPO }}
           className="mt-[clamp(28px,3.35vw,54px)] max-w-[34em] text-[clamp(14.5px,1.07vw,17px)] font-light leading-[1.62] tracking-[-0.01em] text-white/90"
         >
           Use advanced sequencing, bioinformatics, and precise <br className="hidden sm:block" />
           genomic analysis to turn complex genetic data
         </motion.p>
-      </div>
+      </motion.div>
 
-      <div className="container-x relative z-10 mt-auto pb-[clamp(36px,4.6vw,76px)] pt-16">
+      {/* Key Figures - Scroll-Triggered Fade-In */}
+      <motion.div
+        initial={reduce ? { opacity: 0 } : { opacity: 0, y: 28 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 1.2, delay: 0.15, ease: EASE_OUT_EXPO }}
+        className="container-x relative z-10 mt-auto pb-[clamp(36px,4.6vw,76px)] pt-16"
+      >
         <ul className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3" aria-label="Key figures">
           <Stat
-            delay={0.95}
+            delay={0.25}
             label={
               <>
                 Confirmed by thorough
@@ -185,10 +188,10 @@ export function Hero() {
               </>
             }
           >
-            <CountUp to={12} suffix="k+" delay={1.1} />
+            <CountUp to={12} suffix="k+" delay={0.4} />
           </Stat>
           <Stat
-            delay={1.07}
+            delay={0.35}
             label={
               <>
                 Verified with complete
@@ -197,12 +200,13 @@ export function Hero() {
               </>
             }
           >
-            <CountUp to={17} suffix="k+" delay={1.2} />
+            <CountUp to={17} suffix="k+" delay={0.5} />
           </Stat>
           <motion.li
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 22 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.3, delay: 1.19, ease: EASE_OUT_EXPO }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 1.3, delay: 0.45, ease: EASE_OUT_EXPO }}
             className="flex items-center gap-[clamp(10px,0.8vw,14px)] sm:col-span-2 lg:col-span-1"
           >
             <span className="relative block h-[clamp(46px,3.6vw,64px)] w-[clamp(46px,3.6vw,64px)] shrink-0 overflow-hidden rounded-full bg-white ring-[1.5px] ring-white/90">
@@ -217,7 +221,7 @@ export function Hero() {
             </span>
             <span className="flex flex-col gap-[clamp(6px,0.6vw,10px)]">
               <span className="font-display text-[clamp(15.5px,1.28vw,21px)] font-light leading-none tracking-[-0.015em] text-[#d6f2ff]">
-                <CountUp to={99.8} decimals={1} suffix="%" delay={1.3} /> Sequencing Accuracy
+                <CountUp to={99.8} decimals={1} suffix="%" delay={0.6} /> Sequencing Accuracy
               </span>
               <span className="text-[clamp(12.5px,0.98vw,16px)] font-light leading-none tracking-[-0.01em] text-[#cfeaff]/85">
                 Confirmed by thorough and strict quality checks
@@ -225,7 +229,7 @@ export function Hero() {
             </span>
           </motion.li>
         </ul>
-      </div>
+      </motion.div>
     </section>
   );
 }

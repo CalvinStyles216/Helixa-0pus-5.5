@@ -1,0 +1,8 @@
+{
+  "name": "Helixa — Transform DNA Into Discoveries",
+  "description": "Precision genomics, DNA sequencing, genetic testing, and bioinformatics insights.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
